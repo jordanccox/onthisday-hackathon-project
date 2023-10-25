@@ -1,3 +1,13 @@
+import { dummyData } from "../dummy-data"
+
 export default function SearchResultsList() {
-  return <h1>SearchResultsList</h1>
+  const exampleText = {__html: dummyData.data.Events[0].text};
+  const exampleHTML = {__html: dummyData.data.Events[0].html}
+
+  return (
+  <>
+  <div dangerouslySetInnerHTML={exampleText} />
+  <div dangerouslySetInnerHTML={exampleHTML} />
+  </>
+  )
 }
