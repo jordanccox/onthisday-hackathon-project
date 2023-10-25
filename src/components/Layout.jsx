@@ -46,6 +46,7 @@ export default function Layout() {
               <Button variant="outline-primary mt-2">Search</Button>
             </Form>
             <Nav className="me-auto">
+              {/* It would also be nice to add a "Sort" dropdown that allows the user to sort by Date (earliest to latest or latest to earliest), or Alphabetically (A-Z or Z-A)*/}
               <NavDropdown title="Filters" id="search-filter-options">
                 Filter by Type:
                 <NavDropdown.Item>[ ] All</NavDropdown.Item>
