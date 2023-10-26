@@ -3,6 +3,8 @@ import Button from "react-bootstrap/Button";
 
 import { dummyData } from "../dummy-data";
 import SearchResultsItem from "./SearchResultsItem";
+import { useLocation, useSearchParams } from "react-router-dom";
+import NotFound from "./NotFound";
 
 // input - dummyData
 // Items per page: 10, 20, 50
@@ -11,7 +13,7 @@ import SearchResultsItem from "./SearchResultsItem";
 const paginateData = (input, itemsPerPage, page = 0) => {
   const dataObj = {
     date: input.date,
-    path: `/search/${input.date}`,
+    path: `/search/${input.date}/`,
     pages: {},
   };
 
@@ -67,10 +69,18 @@ const renderPage = (paginatedData, page = 0) => {
 
 export default function SearchResultsList() {
   const [page, setPage] = useState(0);
+  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams({ page: 0});
+
+  console.log(location);
 
   // get page results function:
 
   const examplePaginatedData = paginateData(dummyData, 10);
+
+  if (location.pathname !== `${examplePaginatedData.path}` || location.search !== `?page=${page}`) {
+    return <NotFound />;
+  }
 
   console.log(examplePaginatedData); // testing
 
@@ -90,6 +100,7 @@ export default function SearchResultsList() {
     <Button onClick={() => {
       if (Object.prototype.hasOwnProperty.call(examplePaginatedData.pages, page + 1)) {
         setPage(old => old + 1);
+        setSearchParams(() => page + 1);
       }
     }} disabled={!Object.prototype.hasOwnProperty.call(examplePaginatedData.pages, page + 1)}>Next Page</Button>
   </div>
