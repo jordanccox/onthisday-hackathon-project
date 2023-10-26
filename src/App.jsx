@@ -12,8 +12,9 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<StartPage />} />
-        <Route path="/search/:searchId" element={<SearchResultsList />} />
-        <Route path="/search/:searchId/:infoPageId" element={<InfoPage />} />
+        <Route path="/search/:searchQuery" element={<SearchResultsList />} /> 
+        {/* :searchQuery wil look like this: /search/{month},{day}?page= */}
+        <Route path="/search/:searchQuery/:infoPageId" element={<InfoPage />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
