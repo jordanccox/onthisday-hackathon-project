@@ -20,25 +20,54 @@ const paginateData = (input, itemsPerPage, page = 0) => {
     return copiedObject;
   };
 
-  input.data.Events.forEach((item) => {
-    if (!dataObj.pages[page]) {
-      dataObj.pages[page] = [];
-    }
+  // inputData = dummyData.data
+  // section = Events, Deaths, or Births
 
-    if (dataObj.pages[page].length >= itemsPerPage) {
-      page++;
-      dataObj.pages[page] = [];
-    }
+  const parseDataSection = (inputData, section) => {
+    inputData[section].forEach((item) => {
+      if (!dataObj.pages[page]) {
+        dataObj.pages[page] = [];
+      }
+  
+      if (dataObj.pages[page].length >= itemsPerPage) {
+        page++;
+        dataObj.pages[page] = [];
+      }
+  
+      const itemContents = {
+        path: `/search/${dataObj.date}/?page=${page}`,
+        text: item.text,
+        html: item.html,
+        links: copyLinks(item.links),
+      };
+  
+      dataObj.pages[page].push(itemContents);
+    });
+  };
 
-    const itemContents = {
-      path: `/search/${dataObj.date}/?page=${page}`,
-      text: item.text,
-      html: item.html,
-      links: copyLinks(item.links),
-    };
+  parseDataSection(input.data, "Events");
+  parseDataSection(input.data, "Births");
+  parseDataSection(input.data, "Deaths");
 
-    dataObj.pages[page].push(itemContents);
-  });
+  // input.data.Events.forEach((item) => {
+  //   if (!dataObj.pages[page]) {
+  //     dataObj.pages[page] = [];
+  //   }
+
+  //   if (dataObj.pages[page].length >= itemsPerPage) {
+  //     page++;
+  //     dataObj.pages[page] = [];
+  //   }
+
+  //   const itemContents = {
+  //     path: `/search/${dataObj.date}/?page=${page}`,
+  //     text: item.text,
+  //     html: item.html,
+  //     links: copyLinks(item.links),
+  //   };
+
+  //   dataObj.pages[page].push(itemContents);
+  // });
 
   return dataObj;
 };
