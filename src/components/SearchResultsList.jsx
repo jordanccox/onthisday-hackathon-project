@@ -6,6 +6,8 @@ import SearchResultsItem from "./SearchResultsItem";
 import { useLocation, useSearchParams } from "react-router-dom";
 import NotFound from "./NotFound";
 
+// TODO: use back and forward buttons to change data so data isn't lost when using those
+
 // input - dummyData
 // Items per page: 10, 20, 50
 // We will need to refactor to account for filters and sorting eventually
@@ -70,7 +72,7 @@ const renderPage = (paginatedData, page = 0) => {
 export default function SearchResultsList() {
   const [page, setPage] = useState(0);
   const location = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams({ page: 0});
+  const [searchParams, setSearchParams] = useSearchParams({ page: page});
 
   console.log(location);
 
@@ -95,12 +97,21 @@ export default function SearchResultsList() {
   <h4>Footer</h4>
   <div>
     <span>Current Page: {page + 1}</span>
-    <Button onClick={() => setPage(old => Math.max(old - 1, 0))}
+    <Button onClick={() => {
+      setPage(old => Math.max(old - 1, 0))
+      setSearchParams(old => {
+        old.set('page', page - 1);
+        return old;
+      })
+    }}
     disabled={page === 0}>Previous Page</Button>
     <Button onClick={() => {
       if (Object.prototype.hasOwnProperty.call(examplePaginatedData.pages, page + 1)) {
         setPage(old => old + 1);
-        setSearchParams(() => page + 1);
+        setSearchParams((old) => {
+          old.set('page', page + 1);
+          return old;
+      });
       }
     }} disabled={!Object.prototype.hasOwnProperty.call(examplePaginatedData.pages, page + 1)}>Next Page</Button>
   </div>
