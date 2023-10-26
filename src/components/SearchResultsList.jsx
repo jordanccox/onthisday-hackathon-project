@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Button from "react-bootstrap/Button";
+
 import { dummyData } from "../dummy-data";
 import SearchResultsItem from "./SearchResultsItem";
 
@@ -66,30 +68,30 @@ const renderPage = (paginatedData, page = 0) => {
 export default function SearchResultsList() {
   const [page, setPage] = useState(0);
 
-  // const exampleText = {__html: dummyData.data.Events[0].text};
-  // const exampleHTML = {__html: dummyData.data.Events[0].html}; testing
-
   // get page results function:
-
-const getPageResults = (paginatedData, page = 0) => {
-  return paginatedData.pages[page];
-};  
 
   const examplePaginatedData = paginateData(dummyData, 10);
 
-  //const pageResults = getPageResults(examplePaginatedData); obsolete -- delete!
-
   console.log(examplePaginatedData); // testing
 
-  const renderPageResults = renderPage(examplePaginatedData);
+  const renderPageResults = renderPage(examplePaginatedData, page);
 
   return (
   <>
-  {/* <div dangerouslySetInnerHTML={exampleText} />
-  <div dangerouslySetInnerHTML={exampleHTML} /> */}
   <h4>Search Results</h4>
   <div>
     {renderPageResults}
+  </div>
+  <h4>Footer</h4>
+  <div>
+    <span>Current Page: {page + 1}</span>
+    <Button onClick={() => setPage(old => Math.max(old - 1, 0))}
+    disabled={page === 0}>Previous Page</Button>
+    <Button onClick={() => {
+      if (Object.prototype.hasOwnProperty.call(examplePaginatedData.pages, page + 1)) {
+        setPage(old => old + 1);
+      }
+    }} disabled={!Object.prototype.hasOwnProperty.call(examplePaginatedData.pages, page + 1)}>Next Page</Button>
   </div>
   </>
   )
