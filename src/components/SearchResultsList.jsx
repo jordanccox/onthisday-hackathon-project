@@ -79,7 +79,7 @@ export default function SearchResultsList() {
 
   const examplePaginatedData = paginateData(dummyData, 10);
 
-  if (location.pathname !== `${examplePaginatedData.path}` || location.search !== `?page=${currentPage}`) {
+  if (location.pathname !== `${examplePaginatedData.path}` || location.search !== `?page=${currentPage}` || !Object.prototype.hasOwnProperty.call(examplePaginatedData.pages, currentPage)) {
     return <NotFound />;
   }
 
