@@ -1,12 +1,10 @@
-import { useState } from "react";
+import { useLocation, useSearchParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
 import { dummyData } from "../dummy-data";
 import SearchResultsItem from "./SearchResultsItem";
-import { useLocation, useSearchParams } from "react-router-dom";
 import NotFound from "./NotFound";
 
-// TODO: use back and forward buttons to change data so data isn't lost when using those
 
 // input - dummyData
 // Items per page: 10, 20, 50
@@ -70,23 +68,24 @@ const renderPage = (paginatedData, page = 0) => {
 };
 
 export default function SearchResultsList() {
-  const [page, setPage] = useState(0);
   const location = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams({ page: page});
+  const [searchParams, setSearchParams] = useSearchParams({ page: 0});
 
-  console.log(location);
+  const currentPage = Number(searchParams.get('page'));
+
+  console.log(location); // testing
 
   // get page results function:
 
   const examplePaginatedData = paginateData(dummyData, 10);
 
-  if (location.pathname !== `${examplePaginatedData.path}` || location.search !== `?page=${page}`) {
+  if (location.pathname !== `${examplePaginatedData.path}` || location.search !== `?page=${currentPage}`) {
     return <NotFound />;
   }
 
   console.log(examplePaginatedData); // testing
 
-  const renderPageResults = renderPage(examplePaginatedData, page);
+  const renderPageResults = renderPage(examplePaginatedData, currentPage);
 
   return (
   <>
@@ -96,24 +95,22 @@ export default function SearchResultsList() {
   </div>
   <h4>Footer</h4>
   <div>
-    <span>Current Page: {page + 1}</span>
+    <span>Current Page: {currentPage + 1}</span>
     <Button onClick={() => {
-      setPage(old => Math.max(old - 1, 0))
       setSearchParams(old => {
-        old.set('page', page - 1);
+        old.set('page', Math.max(currentPage - 1, 0));
         return old;
-      })
+      });
     }}
-    disabled={page === 0}>Previous Page</Button>
+    disabled={currentPage === 0}>Previous Page</Button>
     <Button onClick={() => {
-      if (Object.prototype.hasOwnProperty.call(examplePaginatedData.pages, page + 1)) {
-        setPage(old => old + 1);
-        setSearchParams((old) => {
-          old.set('page', page + 1);
+      if (Object.prototype.hasOwnProperty.call(examplePaginatedData.pages, currentPage + 1)) {
+        setSearchParams(old => {
+          old.set('page', currentPage + 1);
           return old;
       });
       }
-    }} disabled={!Object.prototype.hasOwnProperty.call(examplePaginatedData.pages, page + 1)}>Next Page</Button>
+    }} disabled={!Object.prototype.hasOwnProperty.call(examplePaginatedData.pages, currentPage + 1)}>Next Page</Button>
   </div>
   </>
   )
