@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom"
-
 import Layout from "./components/Layout"
 import StartPage from "./components/StartPage"
 import InfoPage from "./components/InfoPage"
