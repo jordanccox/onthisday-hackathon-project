@@ -2,9 +2,10 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
 import { dummyData } from "../dummy-data";
-import SearchResultsItem from "./SearchResultsItem";
 import NotFound from "./NotFound";
 import { useEffect } from "react";
+import { paginateData } from "../functions/searchResults";
+import SearchResultsItem from "./SearchResultsItem";
 
 // TODO: Handle filter for Events, Deaths, or births
 // TODO: Handle sorting -- most recent to oldest or oldest to most recent
@@ -15,56 +16,6 @@ import { useEffect } from "react";
 // input - dummyData
 // Items per page: 10, 20, 50
 // We will need to refactor to account for filters and sorting eventually
-
-const paginateData = (input, itemsPerPage, page = 0) => {
-  const dataObj = {
-    date: input.date,
-    path: `/search/${input.date}/`,
-    pages: {},
-  };
-
-  // immutably copy each link in linksObject
-  const copyLinks = (linksObject) => {
-    const copiedObject = {};
-
-    for (const link in linksObject) {
-      copiedObject[link] = {...linksObject[link]};
-    }
-
-    return copiedObject;
-  };
-
-  // inputData = input.data
-  // section = Events, Deaths, or Births
-  const parseDataSection = (inputData, section) => {
-    inputData[section].forEach((item) => {
-      if (!dataObj.pages[page]) {
-        dataObj.pages[page] = [];
-      }
-  
-      if (dataObj.pages[page].length >= itemsPerPage) {
-        page++;
-        dataObj.pages[page] = [];
-      }
-  
-      const itemContents = {
-        path: `/search/${dataObj.date}/?page=${page}`,
-        section: section,
-        text: item.text,
-        html: item.html,
-        links: copyLinks(item.links),
-      };
-  
-      dataObj.pages[page].push(itemContents);
-    });
-  };
-
-  parseDataSection(input.data, "Events");
-  parseDataSection(input.data, "Births");
-  parseDataSection(input.data, "Deaths");
-
-  return dataObj;
-};
 
 const renderPage = (paginatedData, page = 0) => {
   const render = paginatedData.pages[page].map((searchResultData, index) => {
@@ -85,21 +36,22 @@ export default function SearchResultsList() {
 
   // get page results function:
 
-  const examplePaginatedData = paginateData(dummyData, 10);
+  const paginatedData = paginateData(dummyData, 10);
 
+  // handle url endpoints such as "/search/January_1"
   useEffect(() => {
-    if (location.pathname.replace(/\/$/, "") === `${examplePaginatedData.path}`.replace(/\/$/, "") && !location.search) {
-      navigate(`${examplePaginatedData.path}?page=0`);
+    if (location.pathname.replace(/\/$/, "") === `${paginatedData.path}`.replace(/\/$/, "") && !location.search) {
+      navigate(`${paginatedData.path}?page=0`);
     }
-  }, [location, examplePaginatedData, navigate])
+  }, [location, paginatedData, navigate]);
 
-  if (location.pathname !== `${examplePaginatedData.path}` || location.search !== `?page=${currentPage}` || !Object.prototype.hasOwnProperty.call(examplePaginatedData.pages, currentPage)) {
+  if (location.pathname !== `${paginatedData.path}` || location.search !== `?page=${currentPage}` || !Object.prototype.hasOwnProperty.call(paginatedData.pages, currentPage)) {
     return <NotFound />;
   }
 
-  console.log(examplePaginatedData); // testing
+  console.log(paginatedData); // testing
 
-  const renderPageResults = renderPage(examplePaginatedData, currentPage);
+  const renderPageResults = renderPage(paginatedData, currentPage);
 
   return (
   <>
@@ -118,13 +70,13 @@ export default function SearchResultsList() {
     }}
     disabled={currentPage === 0}>Previous Page</Button>
     <Button onClick={() => {
-      if (Object.prototype.hasOwnProperty.call(examplePaginatedData.pages, currentPage + 1)) {
+      if (Object.prototype.hasOwnProperty.call(paginatedData.pages, currentPage + 1)) {
         setSearchParams(old => {
           old.set('page', currentPage + 1);
           return old;
       });
       }
-    }} disabled={!Object.prototype.hasOwnProperty.call(examplePaginatedData.pages, currentPage + 1)}>Next Page</Button>
+    }} disabled={!Object.prototype.hasOwnProperty.call(paginatedData.pages, currentPage + 1)}>Next Page</Button>
   </div>
   </>
   )
