@@ -6,10 +6,9 @@ export const thisDayApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'https://cors-anywhere.herokuapp.com/today.zenquotes.io/api' }),
   endpoints: (builder) => ({
     getHistory: builder.query({
-      query: (date) => {return {
-        url: `/${date}`,
-      }},
-    }),
+      query: (date) => `/${date}`
+      },
+    ),
   }),
 })
 

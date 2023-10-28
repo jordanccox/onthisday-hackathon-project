@@ -4,8 +4,17 @@ import StartPage from "./components/StartPage"
 import InfoPage from "./components/InfoPage"
 import NotFound from "./components/NotFound"
 import SearchResultsList from "./components/SearchResultsList"
+import { useGetHistoryQuery } from "./reducers/searchResultsSlice"
+import { useGetWikiQuery } from "./reducers/wikiSlice"
 
 function App() {
+  const callHistory = useGetHistoryQuery('1/1/1950')
+    if (callHistory.data) {console.log(callHistory.data)}
+    if (callHistory.error) {console.log(callHistory.error)}
+  const callWiki = useGetWikiQuery('Mars')
+    if (callWiki.data) {console.log(callWiki.data)}
+    if (callWiki.error) {console.log(callWiki.error)}
+    
   return (
     <>
     <Routes>
