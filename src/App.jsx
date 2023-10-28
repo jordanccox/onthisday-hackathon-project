@@ -5,19 +5,43 @@ import StartPage from "./components/StartPage";
 import InfoPage from "./components/InfoPage";
 import NotFound from "./components/NotFound";
 import SearchResultsList from "./components/SearchResultsList";
-import { useState } from "react";
+
+import { wikiApiFunction } from "./wikipedia-api-example";
+
 
 function App() {
   // figure out wiki api call
-  const exampleWikiApiCall = async () => {
-    let url =
-      "https://api.wikimedia.org/core/v1/wikipedia/en/page/Earth/with_html";
-    let response = await fetch(url);
-    let data = await response.json().catch(console.error);
-    console.log(data.html);
-  };
+  // const exampleWikiApiCall = async () => {
+  //   let url =
+  //     "https://api.wikimedia.org/core/v1/wikipedia/en/page/Roman_consul/with_html";
+  //   let response = await fetch(url);
+  //   let data = await response.json().catch(console.error);
+  //   console.log(data);
+  // };
 
-  exampleWikiApiCall();
+  // exampleWikiApiCall();
+
+//   const exampleMediaWikiApiCall = async () => {
+//     const url = "https://en.wikipedia.org/w/api.php?" +
+//     new URLSearchParams({
+//         origin: "*",
+//         action: "parse",
+//         page: "Roman_consul",
+//         format: "json",
+//     });
+
+// try {
+//     const req = await fetch(url);
+//     const json = await req.json();
+//     console.log(json.parse.text["*"]);
+// } catch (e) {
+//     console.error(e);
+// }
+//   };
+
+//   exampleMediaWikiApiCall();
+
+  wikiApiFunction();
 
   return (
     <>
