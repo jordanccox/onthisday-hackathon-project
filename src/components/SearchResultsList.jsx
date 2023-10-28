@@ -5,6 +5,11 @@ import { dummyData } from "../dummy-data";
 import SearchResultsItem from "./SearchResultsItem";
 import NotFound from "./NotFound";
 
+// TODO: Handle filter for Events, Deaths, or births
+// TODO: Handle sorting -- most recent to oldest or oldest to most recent
+// TODO: Integrate API call -- when a search is first made, that data must be paginated. If someone enters a search into a URL, 1.) check if data is already stored, 2.) if so, display that data, 3.) if not, make API call and paginate return data
+// TODO: Create InfoPage that will be populated with data from Wikimedia API call when a link is clicked
+
 
 // input - dummyData
 // Items per page: 10, 20, 50
@@ -17,6 +22,7 @@ const paginateData = (input, itemsPerPage, page = 0) => {
     pages: {},
   };
 
+  // immutably copy each link in linksObject
   const copyLinks = (linksObject) => {
     const copiedObject = {};
 
