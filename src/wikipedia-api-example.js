@@ -3,9 +3,9 @@ import wikipedia from 'wikipedia';
 
 const wiki = wikipedia;
 
-export const wikiApiFunction = async () => {
+export const wikiApiFunction = async (wikiPage) => {
   try {
-		const page = await wiki.page('Roman_consul');
+		const page = await wiki.page(wikiPage);
 		console.log(page);
 		//Response of type @Page object
 		const summary = await page.summary();

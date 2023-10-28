@@ -41,7 +41,7 @@ function App() {
 
 //   exampleMediaWikiApiCall();
 
-  wikiApiFunction();
+  wikiApiFunction('Roman_consul');
 
   return (
     <>

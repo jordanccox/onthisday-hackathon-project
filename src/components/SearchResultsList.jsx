@@ -1,9 +1,10 @@
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
 import { dummyData } from "../dummy-data";
 import SearchResultsItem from "./SearchResultsItem";
 import NotFound from "./NotFound";
+import { useEffect } from "react";
 
 // TODO: Handle filter for Events, Deaths, or births
 // TODO: Handle sorting -- most recent to oldest or oldest to most recent
@@ -75,6 +76,7 @@ const renderPage = (paginatedData, page = 0) => {
 
 export default function SearchResultsList() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams({ page: 0});
 
   const currentPage = Number(searchParams.get('page'));
@@ -84,6 +86,12 @@ export default function SearchResultsList() {
   // get page results function:
 
   const examplePaginatedData = paginateData(dummyData, 10);
+
+  useEffect(() => {
+    if (location.pathname.replace(/\/$/, "") === `${examplePaginatedData.path}`.replace(/\/$/, "") && !location.search) {
+      navigate(`${examplePaginatedData.path}?page=0`);
+    }
+  }, [location, examplePaginatedData, navigate])
 
   if (location.pathname !== `${examplePaginatedData.path}` || location.search !== `?page=${currentPage}` || !Object.prototype.hasOwnProperty.call(examplePaginatedData.pages, currentPage)) {
     return <NotFound />;
