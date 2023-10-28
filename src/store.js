@@ -1,1 +1,1 @@
-// Redux Store goes here
+// store
