@@ -1,3 +1,5 @@
+const generateId = () => Math.round(Math.random() * 100000000).toString(36);
+
 export const paginateData = (input, itemsPerPage, page = 0) => {
   const dataObj = {
     date: input.date,
@@ -35,6 +37,7 @@ export const paginateData = (input, itemsPerPage, page = 0) => {
         text: item.text,
         html: item.html,
         links: copyLinks(item.links),
+        infoPageId: `/search/${dataObj.date}/${generateId()}`
       };
   
       dataObj.pages[page].push(itemContents);

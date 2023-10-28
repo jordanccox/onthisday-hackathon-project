@@ -36,7 +36,7 @@ export default function SearchResultsList() {
 
   // get page results function:
 
-  const paginatedData = paginateData(dummyData, 10);
+  const paginatedData = paginateData(dummyData, 10); // only run this function when data is initially called from API, then never again. Check against redux store to see if it already exists
 
   // handle url endpoints such as "/search/January_1"
   useEffect(() => {
