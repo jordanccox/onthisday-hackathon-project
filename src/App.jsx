@@ -1,5 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-
 import Layout from "./components/Layout";
 import StartPage from "./components/StartPage";
 import InfoPage from "./components/InfoPage";
@@ -8,6 +7,9 @@ import SearchResultsList from "./components/SearchResultsList";
 
 import { wikiApiFunction } from "./wikipedia-api-example";
 
+import { useGetHistoryQuery } from "./reducers/searchResultsSlice"
+import { useSelector } from "react-redux"
+// import { useGetWikiQuery } from "./reducers/wikiSlice"
 
 function App() {
   // figure out wiki api call
@@ -43,6 +45,19 @@ function App() {
 
   wikiApiFunction('Roman_consul');
 
+  // Commented this out, it's not working. const date = useSelector(state => state.reducer.date)
+  
+  const state = useSelector(state => state)
+
+  console.log(state)
+  const callHistory = useGetHistoryQuery('')
+  // console.log(date)
+    if (callHistory.data) {console.log(callHistory.data)}
+    if (callHistory.error) {console.log(callHistory.error)}
+  // const callWiki = useGetWikiQuery('Mars')
+  //   if (callWiki.data) {console.log(callWiki.data)}
+  //   if (callWiki.error) {console.log(callWiki.error)}
+    
   return (
     <>
       <Routes>
