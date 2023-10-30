@@ -5,15 +5,22 @@ import InfoPage from "./components/InfoPage"
 import NotFound from "./components/NotFound"
 import SearchResultsList from "./components/SearchResultsList"
 import { useGetHistoryQuery } from "./reducers/searchResultsSlice"
-import { useGetWikiQuery } from "./reducers/wikiSlice"
+import { useSelector } from "react-redux"
+// import { useGetWikiQuery } from "./reducers/wikiSlice"
 
 function App() {
-  const callHistory = useGetHistoryQuery('1/1/1950')
+  // Commented this out, it's not working. const date = useSelector(state => state.reducer.date)
+  
+  const state = useSelector(state => state)
+
+  console.log(state)
+  const callHistory = useGetHistoryQuery('')
+  // console.log(date)
     if (callHistory.data) {console.log(callHistory.data)}
     if (callHistory.error) {console.log(callHistory.error)}
-  const callWiki = useGetWikiQuery('Mars')
-    if (callWiki.data) {console.log(callWiki.data)}
-    if (callWiki.error) {console.log(callWiki.error)}
+  // const callWiki = useGetWikiQuery('Mars')
+  //   if (callWiki.data) {console.log(callWiki.data)}
+  //   if (callWiki.error) {console.log(callWiki.error)}
     
   return (
     <>
