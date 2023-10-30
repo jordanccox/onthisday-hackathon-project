@@ -5,13 +5,21 @@ import InfoPage from "./components/InfoPage";
 import NotFound from "./components/NotFound";
 import SearchResultsList from "./components/SearchResultsList";
 
-import { wikiApiFunction } from "./wikipedia-api-example";
+import { wikiApiFunction } from "./wikipedia-api-example"; // testing
+import { useGetHistoryQuery } from "./reducers/searchResultsSlice"
+import { useGetWikiQuery } from "./reducers/wikiSlice"
 
 import { useGetHistoryQuery } from "./reducers/searchResultsSlice"
 import { useSelector } from "react-redux"
 // import { useGetWikiQuery } from "./reducers/wikiSlice"
 
 function App() {
+  const callHistory = useGetHistoryQuery('1/1/1950')
+    if (callHistory.data) {console.log(callHistory.data)}
+    if (callHistory.error) {console.log(callHistory.error)}
+  const callWiki = useGetWikiQuery('Mars')
+    if (callWiki.data) {console.log(callWiki.data)}
+    if (callWiki.error) {console.log(callWiki.error)}
   // figure out wiki api call
   // const exampleWikiApiCall = async () => {
   //   let url =
